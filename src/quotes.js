@@ -1,19 +1,30 @@
 // Frases aleatorias para acompañar a cada gatito.
 export const quotes = [
-  { text: "Eres la razón por la que hasta los días grises se vuelven bonitos.", author: "Para ti" },
-  { text: "Si la felicidad fuera un gato, se quedaría a dormir contigo.", author: "Anónimo" },
-  { text: "Que cada día te traiga algo tan suave como las patitas de un gato.", author: "Un deseo" },
-  { text: "Eres tan especial que mereces sonreír cada vez que abras esta página.", author: "Para ti" },
-  { text: "La vida es mejor con ronroneos cerca y con gente como tú.", author: "Anónimo" },
-  { text: "Ojalá tengas un día tan calentito como un gato al sol.", author: "Un deseo" },
-  { text: "No importa qué tan grande sea el mundo, siempre hay un rincón pensando en ti.", author: "Para ti" },
-  { text: "Eres pura ternura, igual que estos michis.", author: "Anónimo" },
-  { text: "Que la suerte te siga como un gatito hambriento sigue a su humano favorito.", author: "Un deseo" },
-  { text: "Respira, estira como un gato y recuerda lo increíble que eres.", author: "Para ti" },
-  { text: "Mereces todas las cosas suaves, dulces y bonitas de este mundo.", author: "Anónimo" },
-  { text: "Hoy es un buen día para sentirte querido y para ver gatitos.", author: "Un deseo" },
+  { text: "Un regalito para vos, espero te guste <3", author: "toca el boton!" },
+  { text: "Sos la razón por la que todos los días se vuelven bonitos.", author: "Para vo" },
+  { text: "Ojala te pase todo lo bueno del mundo, eme.", author: "Cuan" },
+  { text: "<3", author: "Para vo" },
+  { text: "La vida es mas bonita con miaus cerca y con gente como vos.", author: "nose" },
+  { text: "Ola eme", author: "Chau eme" },
+  { text: "No importa qué tan ocupado este, siempre hay un rincón una parte mia pensando en vos.", author: "Cuam" },
+  // { text: "Sos pura ternura, igualź que estos michis.", author: "Anónimo" },
+  { text: "Sos mi matriz inversa", author: "Dea que decia" },
+  { text: "Te quiero eme", author: "ola" },
+  { text: "Te extraño", author: "Mucho" },
+  { text: "Sos empalagosamente dulce", author: "y yo amargo" },
+  { text: "Se parece a vos", author: "jijij" },
+  { text: "Sos mi mapa", author: "geopolitico" },
+  { text: "Ya te comprare un diccionario", author: "de los baratos eh" },
 ]
 
-export function frasePorIndice(indice) {
-  return quotes[indice % quotes.length]
+export function frasePorIndice(indice, ultima) {
+  let aux;
+  let frase;
+  
+  delete quotes[0];
+
+  while (aux == ultima) {
+    frase = quotes[indice % quotes.length]
+  }
+  return frase
 }

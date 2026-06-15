@@ -1,0 +1,42 @@
+:root {
+  /* Paleta pastel de rosas */
+  --rosa-fondo: #fdf2f6;
+  --rosa-fondo-2: #fbe4ee;
+  --rosa-claro: #f9d5e2;
+  --rosa-medio: #e8a0bf;
+  --rosa-fuerte: #c76b91;
+  --rosa-profundo: #9c4f70;
+  --crema: #fffafc;
+  --texto: #5a3a44;
+  --texto-suave: #8a6976;
+  --sombra: rgba(156, 79, 112, 0.18);
+
+  --fuente-titulo: "Playfair Display", Georgia, "Times New Roman", serif;
+  --fuente-cuerpo: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  background-color: var(--rosa-fondo);
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--fuente-cuerpo);
+  color: var(--texto);
+  background: radial-gradient(circle at 20% 15%, var(--rosa-fondo-2), var(--rosa-fondo) 60%);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

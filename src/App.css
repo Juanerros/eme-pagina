@@ -1,0 +1,180 @@
+.page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 2rem 1.25rem 3rem;
+  width: 100%;
+  max-width: 540px;
+  margin: 0 auto;
+}
+
+.intro {
+  text-align: center;
+}
+
+.intro .saludo {
+  font-family: var(--fuente-cuerpo);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  color: var(--rosa-fuerte);
+}
+
+.intro h1 {
+  font-family: var(--fuente-titulo);
+  font-weight: 600;
+  font-size: clamp(1.9rem, 7vw, 2.7rem);
+  line-height: 1.15;
+  margin-top: 0.4rem;
+  color: var(--rosa-profundo);
+  text-wrap: balance;
+}
+
+/* Tarjeta principal */
+.tarjeta {
+  width: 100%;
+  background: var(--crema);
+  border-radius: 28px;
+  padding: 1rem;
+  box-shadow: 0 24px 60px -24px var(--sombra), 0 4px 12px -6px var(--sombra);
+  border: 1px solid var(--rosa-claro);
+}
+
+.marco-foto {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 20px;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--rosa-claro), var(--rosa-fondo-2));
+}
+
+.marco-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  animation: aparecer 0.5s ease;
+}
+
+.cargando {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rosa-fuerte);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.huella {
+  width: 34px;
+  height: 34px;
+  border: 3px solid var(--rosa-claro);
+  border-top-color: var(--rosa-medio);
+  border-radius: 50%;
+  animation: girar 0.8s linear infinite;
+}
+
+/* Frase */
+.frase {
+  text-align: center;
+  padding: 1.25rem 0.75rem 0.4rem;
+}
+
+.frase blockquote {
+  font-family: var(--fuente-titulo);
+  font-style: italic;
+  font-size: clamp(1.05rem, 4.2vw, 1.3rem);
+  line-height: 1.5;
+  color: var(--texto);
+  text-wrap: pretty;
+}
+
+.frase .autor {
+  display: block;
+  margin-top: 0.7rem;
+  font-family: var(--fuente-cuerpo);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+/* Botón */
+.boton-gato {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  border: none;
+  cursor: pointer;
+  font-family: var(--fuente-cuerpo);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--crema);
+  background: linear-gradient(135deg, var(--rosa-medio), var(--rosa-fuerte));
+  padding: 0.9rem 2.4rem;
+  border-radius: 999px;
+  box-shadow: 0 12px 26px -10px var(--rosa-fuerte);
+  transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.boton-gato:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 30px -10px var(--rosa-fuerte);
+  filter: brightness(1.03);
+}
+
+.boton-gato:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.boton-gato:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.boton-gato .pata {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.pie {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--texto-suave);
+  margin-top: 0.25rem;
+}
+
+.pie span {
+  color: var(--rosa-fuerte);
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: scale(1.03);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (min-width: 640px) {
+  .page {
+    gap: 1.75rem;
+    padding-top: 3rem;
+  }
+}

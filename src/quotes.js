@@ -20,7 +20,8 @@ export const quotes = [
   { text: "Me volves loco", author: "en ambos sentidos" },
   { text: "Ya te dije las 1001 cosas que me gustan de vos?", author: "no? bueno cuando tengas todo un dia libre sera" },
   { text: "De ese color no tengo", author: "anda rapidoo, robalo" },
-
+  { text: "La ultima golosina tenia veneno", author: "chauu eme"},
+  { text: "Muy", author: "linda"},
 ]
 
 /*

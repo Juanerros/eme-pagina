@@ -1,4 +1,4 @@
-// Frases aleatorias para acompañar a cada gatito.
+// Frases aleatorias (pero con mucho cariño) para acompañar a cada gatito.
 export const quotes = [
   { text: "Podes volver cada que quieras ver un gato", author: "toca el boton!" },
   { text: "Sos la razón por la que todos los días se vuelven bonitos.", author: "Para vos" },

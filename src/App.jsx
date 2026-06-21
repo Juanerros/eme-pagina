@@ -1,8 +1,12 @@
-import { useCallback, useEffect, useState } from "react";
-import { quotes } from "./quotes.js";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { fraseAleatoria, quotes } from "./quotes.js";
 import "./App.css";
 
 const CAT_API = "https://api.thecatapi.com/v1/images/search";
+
+const GATO_EMOJIS = ["🐱", "🐈", "🐾", "😸", "😹", "😺", "😻", "😽", "🙀", "😾", "🐅"];
+const FAVORITO_EMOJIS = ["❤️", "💕", "❣️", "💖", "💘", "💝", "✨", "🌟", "💞"];
+const QUITAR_EMOJIS = ["💔", "🖤", "🌪️", "🥀", "💧", "😿"];
 
 async function traerGato() {
   const res = await fetch(CAT_API);
@@ -16,10 +20,6 @@ function precargar(url) {
   const img = new Image();
   img.crossOrigin = "anonymous";
   img.src = url;
-}
-
-function fraseAleatoria() {
-  return Math.floor(Math.random() * quotes.length);
 }
 
 function PataIcono() {
@@ -58,6 +58,7 @@ export default function App() {
   const [cargandoInicial, setCargandoInicial] = useState(true);
   const [tabActual, setTabActual] = useState("inicio");
   const [fotoAmpliada, setFotoAmpliada] = useState(null);
+  const [confeti, setConfeti] = useState([]);
   const [contadorGatos, setContadorGatos] = useState(() => {
     try {
       return parseInt(localStorage.getItem("contadorGatos") || "0", 10);
@@ -72,6 +73,9 @@ export default function App() {
       return [];
     }
   });
+
+  const botonGatoRef = useRef(null);
+  const botonFavoritoRef = useRef(null);
 
   useEffect(() => {
     localStorage.setItem("contadorGatos", contadorGatos);
@@ -104,13 +108,44 @@ export default function App() {
     };
   }, []);
 
+  function lanzarConfeti(emojis, cantidad, cx, cy) {
+    const batch = Array.from({ length: cantidad }, (_, i) => ({
+      id: `${Date.now()}-${i}`,
+      emoji: emojis[Math.floor(Math.random() * emojis.length)],
+      x: cx,
+      y: cy,
+      dx: (Math.random() - 0.5) * 300,
+      dy: -(Math.random() * 250 + 80),
+      rot: (Math.random() - 0.5) * 720,
+      size: 1 + Math.random() * 1,
+      duracion: 0.6 + Math.random() * 0.6,
+      retraso: Math.random() * 0.15,
+    }));
+
+    setConfeti((prev) => [...prev, ...batch]);
+
+    const ids = new Set(batch.map((p) => p.id));
+    setTimeout(() => {
+      setConfeti((prev) => prev.filter((p) => !ids.has(p.id)));
+    }, 1500);
+  }
+
   const cambiarGato = useCallback(async () => {
+    const rect = botonGatoRef.current?.getBoundingClientRect();
+    const cx = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
+    const cy = rect ? rect.top + rect.height / 2 : window.innerHeight / 2;
+
     if (fotoSiguiente) {
       setFotoActual(fotoSiguiente);
       setFotoSiguiente(null);
     }
     setIndiceFrase(fraseAleatoria());
     setContadorGatos((prev) => prev + 1);
+
+    const nuevoContador = contadorGatos + 1;
+    const cantidad = nuevoContador % 10 === 0 ? 20 : 1;
+    lanzarConfeti(GATO_EMOJIS, cantidad, cx, cy);
+
     try {
       const nueva = await traerGato();
       setFotoSiguiente(nueva);
@@ -118,14 +153,20 @@ export default function App() {
     } catch (err) {
       console.log("[v0] Error trayendo nuevo gato:", err.message);
     }
-  }, [fotoSiguiente]);
+  }, [fotoSiguiente, contadorGatos]);
 
   const toggleFavorito = useCallback(() => {
     if (!fotoActual) return;
+    const rect = botonFavoritoRef.current?.getBoundingClientRect();
+    const cx = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
+    const cy = rect ? rect.top + rect.height / 2 : window.innerHeight / 2;
+
     const existe = favoritos.find((f) => f.catUrl === fotoActual.url);
     if (existe) {
+      lanzarConfeti(QUITAR_EMOJIS, 1, cx, cy);
       setFavoritos((prev) => prev.filter((f) => f.id !== existe.id));
     } else {
+      lanzarConfeti(FAVORITO_EMOJIS, 5, cx, cy);
       const nuevo = {
         id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
         catUrl: fotoActual.url,
@@ -139,7 +180,11 @@ export default function App() {
     }
   }, [fotoActual, indiceFrase, favoritos]);
 
-  const eliminarFavorito = useCallback((id) => {
+  const eliminarFavorito = useCallback((id, e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    lanzarConfeti(QUITAR_EMOJIS, 6, cx, cy);
     setFavoritos((prev) => prev.filter((f) => f.id !== id));
   }, []);
 
@@ -164,7 +209,7 @@ export default function App() {
       </nav>
 
       {tabActual === "inicio" ? (
-        <>
+        <div className="tab-content" key="inicio">
           <header className="intro">
             <p className="saludo">Para eme</p>
             <h1>Un gatito, cada que vuelvas</h1>
@@ -197,6 +242,7 @@ export default function App() {
 
           <div className="acciones">
             <button
+              ref={botonGatoRef}
               className="boton-gato"
               onClick={cambiarGato}
               disabled={cargandoInicial}
@@ -208,12 +254,12 @@ export default function App() {
             </button>
 
             <button
+              ref={botonFavoritoRef}
               className={`boton-favorito${estaEnFavoritos ? " activo" : ""}`}
               onClick={toggleFavorito}
               disabled={!fotoActual}
             >
               {estaEnFavoritos ? <CorazonTachadoIcono /> : <CorazonIcono />}
-              {estaEnFavoritos ? "Quitar" : "Favorito"}
             </button>
           </div>
 
@@ -222,9 +268,10 @@ export default function App() {
           <p className="pie">
             Hecho con cariño y muchos <span>miaus</span>
           </p>
-        </>
+        </div>
       ) : (
-        <section className="favoritos">
+        <div className="tab-content" key="favoritos">
+          <section className="favoritos">
           <h2 className="favoritos-titulo">Favoritos</h2>
           {favoritos.length === 0 ? (
             <p className="sin-favoritos">Todavia no tenes favoritos</p>
@@ -245,7 +292,7 @@ export default function App() {
                   </div>
                   <button
                     className="boton-eliminar"
-                    onClick={() => eliminarFavorito(fav.id)}
+                    onClick={(e) => eliminarFavorito(fav.id, e)}
                     aria-label="Eliminar favorito"
                   >
                     <CorazonTachadoIcono />
@@ -255,6 +302,30 @@ export default function App() {
             </div>
           )}
         </section>
+        </div>
+      )}
+
+      {confeti.length > 0 && (
+        <div className="confeti-contenedor" aria-hidden="true">
+          {confeti.map((p) => (
+            <span
+              key={p.id}
+              className="confeti-particula"
+              style={{
+                left: p.x,
+                top: p.y,
+                fontSize: `${p.size}rem`,
+                "--dx": `${p.dx}px`,
+                "--dy": `${p.dy}px`,
+                "--rot": `${p.rot}deg`,
+                animationDuration: `${p.duracion}s`,
+                animationDelay: `${p.retraso}s`,
+              }}
+            >
+              {p.emoji}
+            </span>
+          ))}
+        </div>
       )}
 
       {fotoAmpliada && (

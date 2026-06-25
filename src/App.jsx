@@ -139,7 +139,7 @@ export default function App() {
       setFotoActual(fotoSiguiente);
       setFotoSiguiente(null);
     }
-    setIndiceFrase(fraseAleatoria());
+    setIndiceFrase(fraseAleatoria(indiceFrase));
     setContadorGatos((prev) => prev + 1);
 
     const nuevoContador = contadorGatos + 1;
